@@ -24,7 +24,10 @@ class MediaEvalEiMDataset(Dataset):
         valence_average = self.df_valence_average[self.df_valence_average['song_id'] == song_id].values[:, 1:]
 
         y, sr = librosa.load(song_path)
-        mel = librosa.feature.melspectrogram(y=y, sr=sr)
+        mel = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=64)
         mel = torch.Tensor(mel)
 
         return mel, arousal_average, valence_average
+
+    def __len__(self):
+        return len(self.audio_path_list)
